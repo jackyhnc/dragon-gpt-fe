@@ -12,6 +12,7 @@ import { cn, samples } from "@/lib/utils";
 import logo from "../public/mario.png";
 import Image from "next/image";
 import { useCalendarStore } from "@/stores/useCalendarStore";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 export default function ChatInterface() {
 	const {
@@ -22,6 +23,7 @@ export default function ChatInterface() {
 	} = useConversationStore();
 
 	const { calendarOpen } = useCalendarStore();
+	useKeyboardShortcuts();
 
 	const [messages, setMessages] = useState<
 		{ text: string; isUser: boolean }[] | null
