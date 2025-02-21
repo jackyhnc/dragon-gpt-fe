@@ -13,6 +13,7 @@ import logo from "../public/mario.png";
 import Image from "next/image";
 import { useCalendarStore } from "@/stores/useCalendarStore";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { Download } from "lucide-react";
 
 export default function ChatInterface() {
 	const {
@@ -49,6 +50,22 @@ export default function ChatInterface() {
 		setMessages(activeConversation?.messages || []);
 		setActiveConversation(activeConversation);
 	}, [activeConversation, setActiveConversation]);
+
+	const handleExportChat = () => {
+		if (!activeConversation || !messages || messages.length === 0) return;
+		const lines: string[] = [`# ${activeConversation.title}\n`];
+		for (const msg of messages) {
+			const role = msg.isUser ? "**You**" : "**DragonGPT**";
+			lines.push(`${role}\n\n${msg.text}\n`);
+		}
+		const blob = new Blob([lines.join("\n---\n\n")], { type: "text/markdown" });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = `${activeConversation.title.replace(/\s+/g, "-")}.md`;
+		a.click();
+		URL.revokeObjectURL(url);
+	};
 
 	const handleSendMessage = async (message: string) => {
 		let firstMessage = false;
@@ -228,9 +245,19 @@ export default function ChatInterface() {
 		<div className="flex flex-col h-[calc(100dvh-5rem)] sm:h-[calc(100vh-10rem)] supports-[dvh]:h-[calc(100dvh-10rem)] w-full min-w-64 flex-1 items-center">
 			{messages && messages.length > 0 && (
 				<div className={cn(
-					"mt-4 flex-grow overflow-auto w-full",
+					"mt-4 flex-grow overflow-auto w-full relative",
 					!calendarOpen && "xl:px-20"
 					)}>
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={handleExportChat}
+						className="absolute top-0 right-2 z-10 text-muted-foreground hover:text-foreground"
+						title="Export chat as markdown"
+						aria-label="Export chat as markdown"
+					>
+						<Download className="h-4 w-4" />
+					</Button>
 					<ChatMessages messages={messages} isStreaming={isStreaming} />
 				</div>
 			)}
