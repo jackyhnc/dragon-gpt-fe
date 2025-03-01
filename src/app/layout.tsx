@@ -6,6 +6,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { TouchProvider } from "@/components/ui/TouchProvider";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Head from "next/head";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -54,7 +55,9 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
+					<ErrorBoundary>
 					<TouchProvider>{children}</TouchProvider>
+				</ErrorBoundary>
 				</ThemeProvider>
 				<Toaster
 					toastOptions={{
