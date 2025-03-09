@@ -13,6 +13,8 @@ import {
 } from "./ui/alert-dialog";
 import { toast } from "sonner";
 
+const MAX_CHARS = 2000;
+
 export default function ChatInput({
 	onSendMessage,
 	isStreaming,
@@ -29,8 +31,11 @@ export default function ChatInput({
 	const [isRecording, setIsRecording] = useState(false);
 	const [alertOpen, setAlertOpen] = useState(false);
 
+	const charCount = inputValue.text.length;
+	const overLimit = charCount > MAX_CHARS;
+
 	const handleSend = () => {
-		if (inputValue.text.trim().length > 0) {
+		if (inputValue.text.trim().length > 0 && !overLimit) {
 			onSendMessage(inputValue.text);
 			setInputValue({ text: "", voice: false });
 			if (messageRef.current) {
@@ -113,7 +118,14 @@ export default function ChatInput({
 	};
 
 	return (
-		<div className="z-10 items-center justify-center flex flex-row gap-2 w-[-webkit-fill-available]">
+		<div className="z-10 items-center justify-center flex flex-col gap-1 w-[-webkit-fill-available]">
+			{charCount > MAX_CHARS * 0.8 && (
+				<span className={`text-xs self-end mr-2 ${overLimit ? "text-red-500 font-semibold" : "text-muted-foreground"}`}
+					aria-live="polite"
+				>
+					{charCount}/{MAX_CHARS}
+				</span>
+			)}
 			<div className="flex flex-row items-center px-1 w-[-webkit-fill-available] max-w-xl lg:max-w-4xl border-solid border rounded-3xl shadow-spread dark:shadow-none focus-within:ring-1 focus-within:ring-neutral-500 bg-gray-200 dark:bg-neutral-700 backdrop-blur-md backdrop-filter">
 				<div
 					contentEditable={true}
@@ -151,7 +163,7 @@ export default function ChatInput({
 				</Button>
 				<Button
 				onClick={handleSend}
-				disabled={isStreaming}
+				disabled={isStreaming || overLimit}
 				className={`rounded-3xl px-3 bg-sky-900`}
 				variant="default"
 			>
