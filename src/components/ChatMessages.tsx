@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import DefaultAvatar from "../public/default_pfp.jpg";
 import { marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
@@ -7,6 +7,7 @@ import DOMPurify from "dompurify";
 import { useConversationStore } from "@/stores/useConversationStore";
 import logo from "../public/mario.png";
 import { useMaskImage } from "@/hooks";
+import { BlinkingIndicator } from "./BlinkingIndicator";
 
 const options = {
 	prefix: "chat-header-",
@@ -48,6 +49,10 @@ export default function ChatMessages({
 	}, [messages]);
 
 	useMaskImage(scrollRef);
+
+	const lastMessage = activeConversation?.messages.at(-1);
+	const showTypingIndicator =
+		isStreaming && lastMessage && !lastMessage.isUser && lastMessage.text.length === 0;
 
 	return (
 		<div
@@ -103,7 +108,23 @@ export default function ChatMessages({
 					</div>
 				</div>
 			))}
-			<div ref={messagesEndRef} />
+			{showTypingIndicator && (
+				<div className="flex justify-start p-2">
+					<div className="flex items-center gap-3 p-2">
+						<Image
+							priority
+							src={logo}
+							alt="DragonGPT"
+							className="w-10 h-10 md:w-14 md:h-14 aspect-square rounded-full object-cover flex-shrink-0"
+						/>
+						<div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+							<BlinkingIndicator />
+							<span className="ml-1">DragonGPT is thinking...</span>
+						</div>
+					</div>
+				</div>
+			)}
+		<div ref={messagesEndRef} />
 		</div>
 	);
 }
