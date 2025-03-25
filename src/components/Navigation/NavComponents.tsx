@@ -31,6 +31,7 @@ export default function NavComponents({
 				"hover:bg-gray-300/40",
 				isInScheduler && "dark:bg-gray-200/20 bg-gray-200/60"
 			)}
+			aria-label="Dragon Scheduler"
 			onClick={handleScheduleClick}>
 				<CalendarDaysIcon className="h-[1.2rem] w-[1.2rem] mr-2" />
 				{variant !== "closed" && (
