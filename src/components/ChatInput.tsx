@@ -147,6 +147,9 @@ export default function ChatInput({
 					className="flex items-center flex-1 p-2 h-auto min-h-10 max-h-40 overflow-y-auto whitespace-pre-wrap border-none
 					focus-visible:ring-0 focus-visible:outline-none"
 					data-placeholder="Message Mario"
+					aria-label="Message input"
+					aria-multiline="true"
+					role="textbox"
 					id="input-yes"
 					style={{ overflowWrap: "anywhere" }}
 				>

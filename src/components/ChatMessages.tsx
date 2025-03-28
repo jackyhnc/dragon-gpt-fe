@@ -59,6 +59,10 @@ export default function ChatMessages({
 			className="overflow-y-auto h-full w-full flex flex-col margin-top: auto"
 			id="chat-messages"
 			ref={scrollRef}
+			role="log"
+			aria-label="Conversation messages"
+			aria-live="polite"
+			aria-relevant="additions"
 		>
 			{" "}
 			{/* Add id for links effect */}
