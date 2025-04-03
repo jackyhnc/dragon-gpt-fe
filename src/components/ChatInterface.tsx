@@ -9,8 +9,6 @@ import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { cn, samples } from "@/lib/utils";
-import logo from "../public/mario.png";
-import Image from "next/image";
 import { useCalendarStore } from "@/stores/useCalendarStore";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { Download } from "lucide-react";
@@ -41,7 +39,6 @@ export default function ChatInterface() {
 	// reset messages when navigating to home
 	useEffect(() => {
 		if (pathname === "/" && messages && messages.length > 0) {
-			// new chat already sets activeConversation to undefined so just setMessages
 			setMessages([]);
 		}
 	}, [pathname]);
@@ -101,16 +98,6 @@ export default function ChatInterface() {
 		}
 
 
-
-		// setMessages((prev) => {
-		// 	const newMessages = [...prev!];
-		// 	newMessages.push({ text: message, isUser: true });
-		// 	newMessages[0].text = 'test'
-		// 	return newMessages;
-		// });
-		// console.log('')
-		// setMessages((prev) => [...prev!, { text: message, isUser: true }]);
-		// setMessages((prev) => [...prev!, { text: "", isUser: false }]);
 
 		try {
 			const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/query", {
@@ -263,59 +250,7 @@ export default function ChatInterface() {
 			)}
 			{messages && messages.length === 0 && (
 				<>
-					{/* Legacy components below */}
-					{/* <div className="hidden dark:block absolute -z-10 top-72 m-auto w-72 h-72 lg:w-96 lg:h-96 bg-gradient-radial from-white/20 to-transparent rounded-full blur-2xl"></div> */}
-					{/* <div className="hidden md:flex flex-col items-center justify-center h-full w-full">
-						<h1 className="text-3xl font-bold mb-10">Ask SAGE</h1>
-						<div className="flex flex-row items-start gap-10">
-							<div className="flex flex-col items-center">
-								<h2 className="hidden lg:block text-lg font-bold mb-4">
-									Ask Questions
-								</h2>
-								<div className="flex flex-col gap-4">
-									{samples.questions.map((message, index) => (
-										// Put the message in the input field when clicked
-										<Button
-											key={index}
-											variant="ghost"
-											onClick={() => handleSendMessage(message)}
-											className="max-w-80 h-fit text-wrap text-base font-light rounded-lg bg-gray-100 dark:bg-gray-100/40 hover:bg-gray-200 dark:hover:bg-gray-300/40 text-left px-2"
-										>
-											{message}
-										</Button>
-									))}
-								</div>
-							</div>
-							<div className="hidden lg:flex flex-col items-center">
-								<h2 className="text-lg font-bold mb-4 text-center">
-									What can SAGE do?
-								</h2>
-								<div className="flex flex-col gap-4">
-									{samples.capabilities.map((str, index) => (
-										<span
-											className="max-w-80 h-fit text-wrap py-2 px-2 bg-gray-100 dark:bg-gray-100/40 rounded-lg"
-											key={index}
-										>
-											{str}
-										</span>
-									))}
-								</div>
-							</div>
-							<div className="hidden lg:flex flex-col items-center">
-								<h2 className="text-lg font-bold mb-4">Limitations</h2>
-								<div className="flex flex-col gap-4">
-									{samples.limitations.map((str, index) => (
-										<span
-											className="max-w-80 h-fit text-wrap py-2 px-2 bg-gray-100 dark:bg-gray-100/40 rounded-lg"
-											key={index}
-										>
-											{str}
-										</span>
-									))}
-								</div>
-							</div>
-						</div>
-					</div> */}
+	
 					<h1 className="text-3xl md:text-4xl font-bold mt-20 md:mb-10 text-center w-72 md:w-1/2 flex-1">
 						What would you like to know more about?
 					</h1>
