@@ -56,20 +56,6 @@ export default function ChatInput({
 		}
 	}, [messageRef.current?.textContent]);
 
-	// useEffect(() => {
-	// 	if (textAreaRef.current) {
-	// 		const textarea = textAreaRef.current;
-	// 		if (textarea.textContent && textarea.textContent.length > 1) {
-	// 			textarea.style.height = 'auto'; // Reset the height
-	// 			const scrollHeight = textarea.scrollHeight;
-
-	// 			// Check if the content overflows horizontally (text wrapping)
-	// 			if (textarea.scrollHeight > textarea.clientHeight || textarea.scrollWidth > textarea.clientWidth) {
-	// 				textarea.style.height = `${scrollHeight}px`;
-	// 			}
-	// 		}
-	// 	}
-	// }, [inputValue]);
 
 	const handleMicClick = () => {
 		const SpeechRecognition =
@@ -99,12 +85,10 @@ export default function ChatInput({
 			toast.error("Permissions with your browser are preventing the microphone from working. Please check your settings.", { duration: 5000 });
 		};
 		recognition.onend = () => {
-			console.log("recognition end");
-			messageRef?.current?.focus(); // Focus the div
+			messageRef?.current?.focus();
 			document.execCommand("SelectAll", false, undefined);
 			document.getSelection()?.collapseToEnd();
 			setIsRecording(false);
-			// handleSend(); // Should we send the message after recording?
 		};
 
 		if (isRecording) {
